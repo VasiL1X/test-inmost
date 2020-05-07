@@ -12,7 +12,8 @@
                             type="checkbox" 
                             :id="'filters__checkbox-' + i"
                             :value="item.strCategory"
-                            v-model="checkedFilters">    
+                            v-model="checkedFilters"
+                            >    
                         <label class="filters__list-label" :for="'filters__checkbox-' + i">{{item.strCategory}}</label>
                     </li>
                 </ul>
@@ -40,10 +41,18 @@ export default {
         ...mapActions([
             'allFilters',
             'allDrinks'
-        ])
+        ]),
+        setDefaultFilters() {
+            for (let filter of this.getFilters) {
+                this.checkedFilters.push(filter.strCategory)
+            }
+        }
     },
     async mounted() {
         await this.allFilters();
+        this.setDefaultFilters();
+        this.allDrinks({'filters': this.checkedFilters})
+
     }
 
 }
